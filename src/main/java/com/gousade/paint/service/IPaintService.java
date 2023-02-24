@@ -2,6 +2,7 @@ package com.gousade.paint.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gousade.paint.entity.Paint;
+import com.gousade.paint.entity.dto.PaintDTO;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.gousade.paint.entity.Paint;
  */
 public interface IPaintService extends IService<Paint> {
 
+    void savePaint(PaintDTO dto);
 }
