@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -25,12 +27,17 @@ public class Paint {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
+    @NotBlank
     @ApiModelProperty("用户id")
     private String userId;
 
+    @NotBlank
+    @Size(max = 500, message = "[图链]长度不能大于{max}")
     @ApiModelProperty("图链")
     private String imageUrl;
 
+    @NotBlank
+    @Size(max = 255, message = "[标题]长度不能大于{max}")
     @ApiModelProperty("标题")
     private String title;
 
@@ -50,7 +57,6 @@ public class Paint {
 
     @ApiModelProperty("逻辑删除")
     @TableLogic
-    private Integer isDeleted;
-
-
+    @TableField(value = "is_deleted", fill = FieldFill.INSERT)
+    private Boolean deleted;
 }

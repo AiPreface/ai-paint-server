@@ -41,7 +41,8 @@ public class PaintTag {
 
     @ApiModelProperty("逻辑删除")
     @TableLogic
-    private Integer isDeleted;
+    @TableField(value = "is_deleted", fill = FieldFill.INSERT)
+    private Boolean deleted;
 
 
 }

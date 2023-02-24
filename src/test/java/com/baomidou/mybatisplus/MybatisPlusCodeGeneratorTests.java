@@ -39,9 +39,10 @@ public class MybatisPlusCodeGeneratorTests {
                         .controllerBuilder().enableRestStyle().enableHyphenStyle()
                         .entityBuilder().enableLombok().enableRemoveIsPrefix().disableSerialVersionUID()
                         .idType(IdType.ASSIGN_ID)
-                        .logicDeleteColumnName("is_deleted")
+                        .logicDeleteColumnName("deleted")
                         .addTableFills(new Column("create_time", FieldFill.INSERT))
                         .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
+                        .addTableFills(new Column("deleted", FieldFill.INSERT))
                         .build())
 //                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
