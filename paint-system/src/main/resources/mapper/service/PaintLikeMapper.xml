@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paint.service.mapper.PaintLikeMapper">
+
+    <resultMap type="PaintLike" id="PaintLikeResult">
+        <result property="id" column="id"/>
+        <result property="paintId" column="paint_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <sql id="selectPaintLikeVo">
+        select id, paint_id, user_id, status, create_time, update_time, update_user
+        from paint_like
+    </sql>
+
+    <select id="selectPaintLikeList" parameterType="PaintLike" resultMap="PaintLikeResult">
+        <include refid="selectPaintLikeVo"/>
+        <where>
+            <if test="paintId != null ">
+                and paint_id = #{paintId}
+            </if>
+            <if test="userId != null  and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="status != null  and status != ''">
+                and status = #{status}
+            </if>
+            <if test="updateUser != null ">
+                and update_user = #{updateUser}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPaintLikeById" parameterType="String"
+            resultMap="PaintLikeResult">
+        <include refid="selectPaintLikeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPaintLike" parameterType="PaintLike">
+        insert into paint_like
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,
+            </if>
+            <if test="paintId != null">paint_id,
+            </if>
+            <if test="userId != null and userId != ''">user_id,
+            </if>
+            <if test="status != null and status != ''">status,
+            </if>
+            <if test="createTime != null">create_time,
+            </if>
+            <if test="updateTime != null">update_time,
+            </if>
+            <if test="updateUser != null">update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},
+            </if>
+            <if test="paintId != null">#{paintId},
+            </if>
+            <if test="userId != null and userId != ''">#{userId},
+            </if>
+            <if test="status != null and status != ''">#{status},
+            </if>
+            <if test="createTime != null">#{createTime},
+            </if>
+            <if test="updateTime != null">#{updateTime},
+            </if>
+            <if test="updateUser != null">#{updateUser},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePaintLike" parameterType="PaintLike">
+        update paint_like
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paintId != null">paint_id =
+                #{paintId},
+            </if>
+            <if test="userId != null and userId != ''">user_id =
+                #{userId},
+            </if>
+            <if test="status != null and status != ''">status =
+                #{status},
+            </if>
+            <if test="createTime != null">create_time =
+                #{createTime},
+            </if>
+            <if test="updateTime != null">update_time =
+                #{updateTime},
+            </if>
+            <if test="updateUser != null">update_user =
+                #{updateUser},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePaintLikeById" parameterType="String">
+        delete
+        from paint_like
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePaintLikeByIds" parameterType="String">
+        delete from paint_like where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

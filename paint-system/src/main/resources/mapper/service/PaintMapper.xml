@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paint.service.mapper.PaintMapper">
+
+    <resultMap type="Paint" id="PaintResult">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="title" column="title"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <sql id="selectPaintVo">
+        select id,
+               user_id,
+               image_url,
+               title,
+               like_count,
+               comment_count,
+               create_time,
+               update_time,
+               status,
+               update_user
+        from paint
+    </sql>
+
+    <select id="selectPaintList" parameterType="Paint" resultMap="PaintResult">
+        <include refid="selectPaintVo"/>
+        <where>
+            <if test="userId != null  and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="imageUrl != null  and imageUrl != ''">
+                and image_url = #{imageUrl}
+            </if>
+            <if test="title != null  and title != ''">
+                and title = #{title}
+            </if>
+            <if test="likeCount != null  and likeCount != ''">
+                and like_count = #{likeCount}
+            </if>
+            <if test="commentCount != null  and commentCount != ''">
+                and comment_count = #{commentCount}
+            </if>
+            <if test="status != null  and status != ''">
+                and status = #{status}
+            </if>
+            <if test="updateUser != null ">
+                and update_user = #{updateUser}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPaintById" parameterType="String"
+            resultMap="PaintResult">
+        <include refid="selectPaintVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPaint" parameterType="Paint">
+        insert into paint
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,
+            </if>
+            <if test="userId != null and userId != ''">user_id,
+            </if>
+            <if test="imageUrl != null and imageUrl != ''">image_url,
+            </if>
+            <if test="title != null and title != ''">title,
+            </if>
+            <if test="likeCount != null and likeCount != ''">like_count,
+            </if>
+            <if test="commentCount != null and commentCount != ''">comment_count,
+            </if>
+            <if test="createTime != null">create_time,
+            </if>
+            <if test="updateTime != null">update_time,
+            </if>
+            <if test="status != null and status != ''">status,
+            </if>
+            <if test="updateUser != null">update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},
+            </if>
+            <if test="userId != null and userId != ''">#{userId},
+            </if>
+            <if test="imageUrl != null and imageUrl != ''">#{imageUrl},
+            </if>
+            <if test="title != null and title != ''">#{title},
+            </if>
+            <if test="likeCount != null and likeCount != ''">#{likeCount},
+            </if>
+            <if test="commentCount != null and commentCount != ''">#{commentCount},
+            </if>
+            <if test="createTime != null">#{createTime},
+            </if>
+            <if test="updateTime != null">#{updateTime},
+            </if>
+            <if test="status != null and status != ''">#{status},
+            </if>
+            <if test="updateUser != null">#{updateUser},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePaint" parameterType="Paint">
+        update paint
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null and userId != ''">user_id =
+                #{userId},
+            </if>
+            <if test="imageUrl != null and imageUrl != ''">image_url =
+                #{imageUrl},
+            </if>
+            <if test="title != null and title != ''">title =
+                #{title},
+            </if>
+            <if test="likeCount != null and likeCount != ''">like_count =
+                #{likeCount},
+            </if>
+            <if test="commentCount != null and commentCount != ''">comment_count =
+                #{commentCount},
+            </if>
+            <if test="createTime != null">create_time =
+                #{createTime},
+            </if>
+            <if test="updateTime != null">update_time =
+                #{updateTime},
+            </if>
+            <if test="status != null and status != ''">status =
+                #{status},
+            </if>
+            <if test="updateUser != null">update_user =
+                #{updateUser},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePaintById" parameterType="String">
+        delete
+        from paint
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePaintByIds" parameterType="String">
+        delete from paint where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
