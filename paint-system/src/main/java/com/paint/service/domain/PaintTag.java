@@ -25,14 +25,14 @@ public class PaintTag  {
      * $column.columnComment
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 绘图id
      */
     @Excel(name = "绘图id")
     @TableField("paint_id")
-    private Long paintId;
+    private String paintId;
 
     /**
      * 标签，例如JK、原神，一个标签一条数据

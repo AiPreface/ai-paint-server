@@ -23,7 +23,7 @@ public class Paint  {
      * 主键
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 用户id
@@ -51,14 +51,14 @@ public class Paint  {
      */
     @Excel(name = "点赞数")
     @TableField("like_count")
-    private Long likeCount;
+    private Integer likeCount;
 
     /**
      * 评论数
      */
     @Excel(name = "评论数")
     @TableField("comment_count")
-    private Long commentCount;
+    private Integer commentCount;
 
     /**
      * 状态

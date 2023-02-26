@@ -1,6 +1,10 @@
 package com.paint.service.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.paint.service.domain.Paint;
 import com.paint.service.domain.PaintLike;
+import com.paint.service.domain.form.ApiCommentForm;
+import com.paint.service.domain.form.ApiLikeForm;
 
 import java.util.List;
 
@@ -10,7 +14,7 @@ import java.util.List;
  * @author story-x
  * @date 2023-02-26
  */
-public interface IPaintLikeService {
+public interface IPaintLikeService extends IService<PaintLike> {
     /**
      * 查询绘图点赞
      *
@@ -58,4 +62,11 @@ public interface IPaintLikeService {
      * @return 结果
      */
     public int deletePaintLikeById(String id);
+
+    /**
+     * 保存点赞
+     *
+     * @param likeForm 点赞表单
+     */
+    void ApiSaveLike(ApiLikeForm likeForm);
 }

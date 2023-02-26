@@ -1,6 +1,5 @@
 package com.paint.service.domain.form;
 
-import com.paint.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,6 +7,12 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+/**
+ * 图片
+ *
+ * @author story-x
+ * @date 2023/02/26
+ */
 @Data
 @ApiModel(value = "Paint对象", description = "")
 public class ApiPaintForm {

@@ -1,5 +1,6 @@
 package com.paint.service.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.paint.service.domain.PaintComment;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author story-x
  * @date 2023-02-26
  */
-public interface PaintCommentMapper {
+public interface PaintCommentMapper extends BaseMapper<PaintComment> {
     /**
      * 查询绘图评论
      *

@@ -1,12 +1,18 @@
 package com.paint.service.service.impl;
 
-import com.paint.common.utils.DateUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.paint.common.enums.AvailableEnum;
+import com.paint.service.domain.Paint;
 import com.paint.service.domain.PaintComment;
+import com.paint.service.domain.form.ApiCommentForm;
 import com.paint.service.mapper.PaintCommentMapper;
 import com.paint.service.service.IPaintCommentService;
+import com.paint.service.service.IPaintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -16,10 +22,11 @@ import java.util.List;
  * @date 2023-02-26
  */
 @Service
-public class PaintCommentServiceImpl implements IPaintCommentService {
-    @Autowired
-    private PaintCommentMapper paintCommentMapper;
+public class PaintCommentServiceImpl extends ServiceImpl<PaintCommentMapper, PaintComment> implements IPaintCommentService {
 
+
+    @Autowired
+    private IPaintService paintService;
     /**
      * 查询绘图评论
      *
@@ -28,7 +35,7 @@ public class PaintCommentServiceImpl implements IPaintCommentService {
      */
     @Override
     public PaintComment selectPaintCommentById(String id) {
-        return paintCommentMapper.selectPaintCommentById(id);
+        return baseMapper.selectPaintCommentById(id);
     }
 
     /**
@@ -39,7 +46,7 @@ public class PaintCommentServiceImpl implements IPaintCommentService {
      */
     @Override
     public List<PaintComment> selectPaintCommentList(PaintComment paintComment) {
-        return paintCommentMapper.selectPaintCommentList(paintComment);
+        return baseMapper.selectPaintCommentList(paintComment);
     }
 
     /**
@@ -50,8 +57,8 @@ public class PaintCommentServiceImpl implements IPaintCommentService {
      */
     @Override
     public int insertPaintComment(PaintComment paintComment) {
-        paintComment.setCreateTime(DateUtils.getNowDate());
-        return paintCommentMapper.insertPaintComment(paintComment);
+        paintComment.setCreateTime(LocalDateTime.now());
+        return baseMapper.insertPaintComment(paintComment);
     }
 
     /**
@@ -62,8 +69,8 @@ public class PaintCommentServiceImpl implements IPaintCommentService {
      */
     @Override
     public int updatePaintComment(PaintComment paintComment) {
-        paintComment.setUpdateTime(DateUtils.getNowDate());
-        return paintCommentMapper.updatePaintComment(paintComment);
+        paintComment.setUpdateTime(LocalDateTime.now());
+        return baseMapper.updatePaintComment(paintComment);
     }
 
     /**
@@ -74,7 +81,7 @@ public class PaintCommentServiceImpl implements IPaintCommentService {
      */
     @Override
     public int deletePaintCommentByIds(String[] ids) {
-        return paintCommentMapper.deletePaintCommentByIds(ids);
+        return baseMapper.deletePaintCommentByIds(ids);
     }
 
     /**
@@ -85,6 +92,29 @@ public class PaintCommentServiceImpl implements IPaintCommentService {
      */
     @Override
     public int deletePaintCommentById(String id) {
-        return paintCommentMapper.deletePaintCommentById(id);
+        return baseMapper.deletePaintCommentById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void ApiSaveComment(ApiCommentForm commentForm) {
+        Paint paint = paintService.getById(commentForm.getImgId());
+        if (paint == null) {
+           throw new RuntimeException("图片不存在");
+        }
+        PaintComment paintComment = new PaintComment();
+        paintComment.setPaintId(paint.getId());
+        paintComment.setUserId(commentForm.getUserId());
+        paintComment.setComment(commentForm.getDiscuss());
+        paintComment.setCreateTime(LocalDateTime.now());
+        paintComment.setStatus(AvailableEnum.UN_AVAILABLE.getCode());
+        if (save(paintComment)) {
+           synchronized (this) {
+               paint = paintService.selectPaintById(commentForm.getImgId());
+               paint.setCommentCount(paint.getCommentCount() + 1);
+               paint.setUpdateTime(LocalDateTime.now());
+               paintService.updatePaint(paint);
+           }
+        }
     }
 }

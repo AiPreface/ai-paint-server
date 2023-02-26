@@ -68,5 +68,5 @@ public interface IPaintService extends IService<Paint> {
      * @param apiPaintForm api绘画form
      * @return {@link R}<{@link String}>
      */
-    Long savePaint(ApiPaintForm apiPaintForm);
+    String ApiSavePaint(ApiPaintForm apiPaintForm);
 }

@@ -3,7 +3,6 @@ package com.paint.service.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.paint.common.enums.AvailableEnum;
-import com.paint.common.utils.DateUtils;
 import com.paint.service.domain.Paint;
 import com.paint.service.domain.PaintTag;
 import com.paint.service.domain.form.ApiPaintForm;
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.beans.Transient;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,7 +99,7 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long savePaint(ApiPaintForm apiPaintForm) {
+    public String ApiSavePaint(ApiPaintForm apiPaintForm) {
         if (CollectionUtils.isEmpty(apiPaintForm.getTags())) {
             return null;
         }
@@ -122,7 +119,7 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
                 .ne(Paint::getStatus, AvailableEnum.HAS_DELETE.getCode())
         );
         if (paintByUrl != null) {
-            throw new RuntimeException("该绘图已存在");
+            throw new RuntimeException("该图片已存在");
         }
 
 
