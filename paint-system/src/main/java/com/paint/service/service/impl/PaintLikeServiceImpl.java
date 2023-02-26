@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.paint.common.enums.AvailableEnum;
 import com.paint.common.enums.LikeEnum;
-import com.paint.common.utils.DateUtils;
 import com.paint.service.domain.Paint;
 import com.paint.service.domain.PaintLike;
 import com.paint.service.domain.form.ApiLikeForm;

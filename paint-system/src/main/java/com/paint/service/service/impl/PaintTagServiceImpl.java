@@ -1,7 +1,6 @@
 package com.paint.service.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.paint.common.utils.DateUtils;
 import com.paint.service.domain.PaintTag;
 import com.paint.service.mapper.PaintTagMapper;
 import com.paint.service.service.IPaintTagService;
