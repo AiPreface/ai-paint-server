@@ -16,5 +16,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PaintLikeServiceImpl extends ServiceImpl<PaintLikeMapper, PaintLike> implements IPaintLikeService {
+    @Override
+    public boolean save(PaintLike entity) {
+        PaintLike paintLike = baseMapper.select(entity.getPaintId(), entity.getUserId());
+        if (paintLike == null) {
+            return super.save(entity);
+        } else {
+            baseMapper.deleteById(paintLike.getId());
+            return false;
+        }
+    }
 
+    @Override
+    public PaintLike select(Long paintId, String userId) {
+        return baseMapper.select(paintId, userId);
+    }
 }

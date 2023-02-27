@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -25,9 +27,11 @@ public class PaintLike {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
+    @NotNull(message = "[绘图id]不能为空")
     @ApiModelProperty("绘图id")
     private Long paintId;
 
+    @NotBlank(message = "[用户id]不能为空")
     @ApiModelProperty("用户id")
     private String userId;
 

@@ -27,16 +27,16 @@ public class Paint {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "[用户id]不能为空")
     @ApiModelProperty("用户id")
     private String userId;
 
-    @NotBlank
+    @NotBlank(message = "[图链]不能为空")
     @Size(max = 500, message = "[图链]长度不能大于{max}")
     @ApiModelProperty("图链")
     private String imageUrl;
 
-    @NotBlank
+    @NotBlank(message = "[标题]不能为空")
     @Size(max = 255, message = "[标题]长度不能大于{max}")
     @ApiModelProperty("标题")
     private String title;

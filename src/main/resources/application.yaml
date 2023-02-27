@@ -1,7 +1,7 @@
 server:
   port: 9990
   servlet:
-    context-path: /aiPaint/
+    context-path: /aiPaint
 spring:
   profiles:
     active: dev
@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://60.205.201.214:9733/ai-paint?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
     username: root
-    password: Wxl366201
+    password: Tohsaka998
     druid:
       async-init: true
       # 初始连接数
@@ -41,7 +41,7 @@ spring:
       statViewServlet:
         enabled: true
         # 设置白名单，不填则允许所有访问
-        allow:
+        allow: 127.0.0.1
         url-pattern: /druid/*
         # 控制台管理用户名和密码
         login-username: admin
@@ -76,5 +76,6 @@ mybatis-plus:
   mapper-locations: classpath:**/mapper/xml/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false

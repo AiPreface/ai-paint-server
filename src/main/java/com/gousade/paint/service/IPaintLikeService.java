@@ -12,5 +12,6 @@ import com.gousade.paint.entity.PaintLike;
  * @since 2023-02-24
  */
 public interface IPaintLikeService extends IService<PaintLike> {
+    PaintLike select(Long paintId, String userId);
 
 }
