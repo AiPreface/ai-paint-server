@@ -2,7 +2,7 @@ package com.paint.service.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.paint.common.enums.AvailableEnum;
+import com.paint.common.enums.Available;
 import com.paint.common.enums.LikeEnum;
 import com.paint.service.domain.Paint;
 import com.paint.service.domain.PaintLike;
@@ -103,7 +103,7 @@ public class PaintLikeServiceImpl extends ServiceImpl<PaintLikeMapper, PaintLike
         }
         LikeEnum likeEnum = LikeEnum.getLikeEnum(likeForm.getLikeType());
         PaintLike paintLike = new PaintLike();
-        PaintLike already = getOne(new LambdaQueryWrapper<>(new PaintLike()).eq(PaintLike::getPaintId, likeForm.getImgId()).eq(PaintLike::getUserId, likeForm.getUserId()).ne(PaintLike::getStatus, AvailableEnum.HAS_DELETE.getCode()));
+        PaintLike already = getOne(new LambdaQueryWrapper<>(new PaintLike()).eq(PaintLike::getPaintId, likeForm.getImgId()).eq(PaintLike::getUserId, likeForm.getUserId()).ne(PaintLike::getStatus, Available.HAS_DELETE.getCode()));
         if (likeEnum== LikeEnum.LIKE) {
             //判断是否已经点赞
             if (already != null) {
@@ -111,14 +111,14 @@ public class PaintLikeServiceImpl extends ServiceImpl<PaintLikeMapper, PaintLike
             }
             paintLike.setPaintId(likeForm.getImgId());
             paintLike.setUserId(likeForm.getUserId());
-            paintLike.setStatus(AvailableEnum.AVAILABLE.getCode());
+            paintLike.setStatus(Available.AVAILABLE.getCode());
             paintLike.setCreateTime(LocalDateTime.now());
             save(paintLike);
         } else {
             if (already == null) {
                 throw new RuntimeException("还没有点赞");
             }
-            already.setStatus(AvailableEnum.HAS_DELETE.getCode());
+            already.setStatus(Available.HAS_DELETE.getCode());
             already.setUpdateTime(LocalDateTime.now());
             updateById(already);
         }

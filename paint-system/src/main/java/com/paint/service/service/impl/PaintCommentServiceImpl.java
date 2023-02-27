@@ -1,7 +1,7 @@
 package com.paint.service.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.paint.common.enums.AvailableEnum;
+import com.paint.common.enums.Available;
 import com.paint.service.domain.Paint;
 import com.paint.service.domain.PaintComment;
 import com.paint.service.domain.form.ApiCommentForm;
@@ -107,7 +107,7 @@ public class PaintCommentServiceImpl extends ServiceImpl<PaintCommentMapper, Pai
         paintComment.setUserId(commentForm.getUserId());
         paintComment.setComment(commentForm.getDiscuss());
         paintComment.setCreateTime(LocalDateTime.now());
-        paintComment.setStatus(AvailableEnum.UN_AVAILABLE.getCode());
+        paintComment.setStatus(Available.AVAILABLE.getCode());
         if (save(paintComment)) {
            synchronized (this) {
                paint = paintService.selectPaintById(commentForm.getImgId());

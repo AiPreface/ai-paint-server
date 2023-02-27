@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ApiPaintForm {
      * 用户id
      */
     @ApiModelProperty(name="用户id", required = true)
+    @NotBlank(message = "用户ID不能为空")
     private String userId;
 
     /**
@@ -28,6 +30,7 @@ public class ApiPaintForm {
      */
     @Size(max = 500, message = "[图链]长度不能大于{max}")
     @ApiModelProperty(name="图链", required = true)
+    @NotBlank(message = "图链不能为空")
     private String imageUrl;
 
     /**
@@ -35,6 +38,7 @@ public class ApiPaintForm {
      */
     @Size(max = 255, message = "[标题]长度不能大于{max}")
     @ApiModelProperty(name="标题", required = true)
+    @NotBlank(message = "标题不能为空")
     private String title;
 
     /**

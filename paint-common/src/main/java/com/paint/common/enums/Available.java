@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum AvailableEnum {
+public enum Available {
     AVAILABLE(1, "可用"),
     UN_AVAILABLE(0, "不可用"),
     HAS_DELETE(-1, "已删除"),
@@ -20,3 +20,4 @@ public enum AvailableEnum {
     private final int code;
     private final String desc;
 }
+

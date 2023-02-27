@@ -1,10 +1,13 @@
 package com.paint.web.controller.tool;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.paint.common.core.domain.R;
+import com.paint.service.domain.condition.ApiPaintCondition;
 import com.paint.service.domain.form.ApiCommentForm;
 import com.paint.service.domain.form.ApiLikeForm;
 import com.paint.service.domain.form.ApiPaintForm;
+import com.paint.service.domain.vo.PaintVo;
 import com.paint.service.service.IPaintCommentService;
 import com.paint.service.service.IPaintLikeService;
 import com.paint.service.service.IPaintService;
@@ -13,6 +16,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Api(tags = {"绘图服务API"})
@@ -26,12 +31,12 @@ public class ApiPaintServiceController {
     @Autowired
     private IPaintLikeService paintLikeService;
     /**
-     * 绘画保存
+     * 图片保存
      *
-     * @param apiPaintForm api绘画form
+     * @param apiPaintForm api图片form
      * @return {@link R}<{@link String}>
      */
-    @ApiOperation("保存绘图信息")
+    @ApiOperation("保存图片信息")
     @PostMapping("/saveImg")
     public R<String> paintSave(@Validated @RequestBody ApiPaintForm apiPaintForm) {
         try {
@@ -43,9 +48,8 @@ public class ApiPaintServiceController {
 
     }
 
-
     /**
-     * 绘画评论
+     * 图片评论
      *
      * @param commentForm 评论form
      * @return {@link R}<{@link String}>
@@ -62,7 +66,7 @@ public class ApiPaintServiceController {
     }
 
     /**
-     * 绘画点赞
+     * 图片点赞
      *
      * @param likeForm 点赞form
      * @return {@link R}<{@link String}>
@@ -78,5 +82,55 @@ public class ApiPaintServiceController {
         }
     }
 
+
+    /**
+     *根据userId查询图片list
+     */
+    @ApiOperation("根据userId分页查询图片列表")
+    @PostMapping("/getImgPageByUserId")
+    public R<Page<PaintVo>> getImgPageByUserId(@Validated @RequestBody ApiPaintCondition condition) {
+        try {
+            Page<PaintVo> paintVoList = paintService.getImgPageByUserId(condition);
+            return R.ok(paintVoList);
+        }catch (Exception e){
+            return R.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("根据userId查询全部图片列表")
+    @PostMapping("/getImgListByUserId")
+    public R<List<PaintVo>> getImgListByUserId(@Validated @RequestBody ApiPaintCondition condition) {
+        try {
+            List<PaintVo> paintVoList = paintService.getImgListByUserId(condition);
+            return R.ok(paintVoList);
+        }catch (Exception e){
+            return R.fail(e.getMessage());
+        }
+    }
+    /**
+     *根据userId查询图片list
+     */
+    @ApiOperation("根据tag分页查询图片列表")
+    @PostMapping("/getImgPageByTag")
+    public R<Page<PaintVo>> getImgPageByTag(@Validated @RequestBody ApiPaintCondition condition) {
+        try {
+            Page<PaintVo> paintVoList = paintService.getImgPageByTag(condition);
+            return R.ok(paintVoList);
+        }catch (Exception e){
+            return R.fail(e.getMessage());
+        }
+    }
+
+
+    @ApiOperation("根据tag查询全部图片列表")
+    @PostMapping("/getImgListByTag")
+    public R<List<PaintVo>> getImgListByTag(@Validated @RequestBody ApiPaintCondition condition) {
+        try {
+            List<PaintVo> paintVoList = paintService.getImgListByTag(condition);
+            return R.ok(paintVoList);
+        }catch (Exception e){
+            return R.fail(e.getMessage());
+        }
+    }
 
 }

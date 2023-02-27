@@ -1,9 +1,12 @@
 package com.paint.service.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.paint.common.core.domain.R;
 import com.paint.service.domain.Paint;
+import com.paint.service.domain.condition.ApiPaintCondition;
 import com.paint.service.domain.form.ApiPaintForm;
+import com.paint.service.domain.vo.PaintVo;
 
 import java.util.List;
 
@@ -69,4 +72,37 @@ public interface IPaintService extends IService<Paint> {
      * @return {@link R}<{@link String}>
      */
     String ApiSavePaint(ApiPaintForm apiPaintForm);
+
+    /**
+     * 根据userId查询图片列表
+     *
+     * @param condition 查询条件
+     * @return {@link List}<{@link PaintVo}>
+     */
+    List<PaintVo> getImgListByUserId(ApiPaintCondition condition);
+
+    /**
+     * 根据userId分页查询图片列表
+     *
+     * @param condition 查询条件
+     * @return {@link List}<{@link PaintVo}>
+     */
+    Page<PaintVo> getImgPageByUserId(ApiPaintCondition condition);
+
+    /**
+     * 根据tag分页图片列表
+     *
+     * @param condition 查询条件
+     * @return {@link List}<{@link PaintVo}>
+     */
+    Page<PaintVo> getImgPageByTag(ApiPaintCondition condition);
+
+    /**
+     * 根据tag查询图片列表
+     *
+     * @param condition 查询条件
+     * @return {@link List}<{@link PaintVo}>
+     */
+    List<PaintVo> getImgListByTag(ApiPaintCondition condition);
+
 }
