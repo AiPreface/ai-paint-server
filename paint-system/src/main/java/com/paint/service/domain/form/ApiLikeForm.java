@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 /**
  * 图片点赞
@@ -35,10 +35,8 @@ public class ApiLikeForm {
     /**
      * 点赞
      */
-    @ApiModelProperty(name="点赞", required = true)
-    @NotBlank(message = "点赞状态不能为空")
+    @ApiModelProperty(name = "点赞", required = true)
+    @NotNull(message = "点赞状态不能为空")
+    @com.paint.common.validation.constraints.Enum(target = LikeEnum.class, field = "type", message = "[点赞状态]应该为枚举{target}的{field}属性之一")
     private Integer likeType;
-
-
-
 }

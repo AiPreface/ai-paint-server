@@ -129,11 +129,13 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
         Paint paint = new Paint();
         paint.setUserId(apiPaintForm.getUserId());
         paint.setImageUrl(apiPaintForm.getImageUrl());
+        paint.setLikeCount(0);
+        paint.setCommentCount(0);
         paint.setTitle(apiPaintForm.getTitle());
         paint.setStatus(Available.AVAILABLE.getCode());
         paint.setCreateTime(LocalDateTime.now());
 
-        if (save(paint)){
+        if (save(paint)) {
             List<PaintTag> tags = apiPaintForm.getTags().stream().map(item -> {
                 PaintTag paintTag = new PaintTag();
                 paintTag.setPaintId(paint.getId());
@@ -160,7 +162,7 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
             .ne(Paint::getStatus, Available.HAS_DELETE.getCode())
             .orderByDesc(Paint::getCreateTime);
         if (StringUtils.isNotBlank(condition.getTitle())){
-            wrapper.eq(Paint::getTitle, condition.getTitle());
+            wrapper.like(Paint::getTitle, condition.getTitle());
         }
         List<PaintVo> paintVos =list(wrapper).stream().map(item -> {
             PaintVo paintVo = new PaintVo();
@@ -188,7 +190,7 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
                 .ne(Paint::getStatus, Available.HAS_DELETE.getCode())
                 .orderByDesc(Paint::getCreateTime);
         if (StringUtils.isNotBlank(condition.getTitle())) {
-            wrapper.eq(Paint::getTitle, condition.getTitle());
+            wrapper.like(Paint::getTitle, condition.getTitle());
         }
         if (!CollectionUtils.isEmpty(condition.getTags())) {
             //TODO 用户+标签搜索
