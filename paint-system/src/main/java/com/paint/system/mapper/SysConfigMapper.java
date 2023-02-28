@@ -1,6 +1,7 @@
 package com.paint.system.mapper;
 
 import com.paint.system.domain.SysConfig;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@DependsOn("flywayInitializer")
 public interface SysConfigMapper {
     /**
      * 查询参数配置信息

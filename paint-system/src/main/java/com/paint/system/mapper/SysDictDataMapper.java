@@ -2,6 +2,7 @@ package com.paint.system.mapper;
 
 import com.paint.common.core.domain.entity.SysDictData;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@DependsOn("flywayInitializer")
 public interface SysDictDataMapper {
     /**
      * 根据条件分页查询字典数据

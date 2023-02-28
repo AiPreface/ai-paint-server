@@ -50,11 +50,20 @@
             <artifactId>paint-framework</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
 
         <!-- 代码生成-->
         <dependency>
             <groupId>com.paint</groupId>
             <artifactId>paint-generator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.paint</groupId>
+            <artifactId>paint-system</artifactId>
         </dependency>
 
     </dependencies>

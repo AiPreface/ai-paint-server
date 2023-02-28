@@ -48,6 +48,11 @@ spring:
       # 热部署开关
       enabled: true
 
+  flyway:
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    enabled: true
+
 # token配置
 token:
   # 令牌自定义标识
