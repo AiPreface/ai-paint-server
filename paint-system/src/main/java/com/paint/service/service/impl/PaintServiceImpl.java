@@ -2,6 +2,7 @@ package com.paint.service.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.paint.common.enums.Available;
@@ -105,9 +106,6 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String ApiSavePaint(ApiPaintForm apiPaintForm) {
-        if (CollectionUtils.isEmpty(apiPaintForm.getTags())) {
-            return null;
-        }
         //校验tag是否存在且未删除和一个paintId
 //        List<PaintTag> existTags = paintTagService.list(new LambdaQueryWrapper<PaintTag>()
 //                .in(PaintTag::getTag, apiPaintForm.getTags())
@@ -157,9 +155,6 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
      */
     @Override
     public List<PaintVo> getImgListByUserId(ApiPaintCondition condition) {
-        if (condition.getUserId()==null) {
-            throw new RuntimeException("用户id不能为空");
-        }
         LambdaQueryWrapper<Paint> wrapper=new LambdaQueryWrapper<>();
         wrapper.eq(Paint::getUserId, condition.getUserId())
             .ne(Paint::getStatus, Available.HAS_DELETE.getCode())
@@ -188,18 +183,16 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
      */
     @Override
     public Page<PaintVo> getImgPageByUserId(ApiPaintCondition condition) {
-        if (condition.getPage()==null || condition.getPageSize()==null||condition.getPage()<=0 || condition.getPageSize()<=0) {
-           throw new RuntimeException("分页参数不能为空");
-        }
-        if (condition.getUserId()==null) {
-            throw new RuntimeException("用户id不能为空");
-        }
-        LambdaQueryWrapper<Paint> wrapper=new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<Paint> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Paint::getUserId, condition.getUserId())
                 .ne(Paint::getStatus, Available.HAS_DELETE.getCode())
                 .orderByDesc(Paint::getCreateTime);
-        if (StringUtils.isNotBlank(condition.getTitle())){
+        if (StringUtils.isNotBlank(condition.getTitle())) {
             wrapper.eq(Paint::getTitle, condition.getTitle());
+        }
+        if (!CollectionUtils.isEmpty(condition.getTags())) {
+            //TODO 用户+标签搜索
+//            wrapper.in(Paint::getTag, condition.getTags());
         }
 
         IPage<Paint> paintIPage = page(new Page<>(condition.getPage(), condition.getPageSize()), wrapper);
@@ -229,24 +222,21 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
      */
     @Override
     public Page<PaintVo> getImgPageByTag(ApiPaintCondition condition) {
-        if (condition.getPage()==null || condition.getPageSize()==null||condition.getPage()<=0 || condition.getPageSize()<=0) {
-            throw new RuntimeException("分页参数不能为空");
-        }
         if (CollectionUtils.isEmpty(condition.getTags())) {
             throw new RuntimeException("tags不能为空");
         }
-        List<PaintTag> paintTags = paintTagService.list(new LambdaQueryWrapper<PaintTag>()
-                .in(PaintTag::getTag, condition.getTags())
-                .eq(PaintTag::getStatus, Available.AVAILABLE.getCode())
-//                .groupBy(PaintTag::getPaintId)
+        Page<PaintTag> paintIdPage = paintTagService.page(new Page<>(condition.getPage(), condition.getPageSize()),
+                Wrappers.<PaintTag>query().select("distinct paint_id").lambda()
+                        .in(PaintTag::getTag, condition.getTags())
+                        .eq(PaintTag::getStatus, Available.AVAILABLE.getCode())
         );
 
-        if (CollectionUtils.isEmpty(paintTags)) {
+        if (CollectionUtils.isEmpty(paintIdPage.getRecords())) {
             throw new RuntimeException("没有查询到相关图片");
         }
 
-        List<String> paintIds = paintTags.stream().map(PaintTag::getPaintId).collect(Collectors.toList());
-        LambdaQueryWrapper<Paint> wrapper=new LambdaQueryWrapper<>();
+        List<String> paintIds = paintIdPage.getRecords().stream().map(PaintTag::getPaintId).collect(Collectors.toList());
+        LambdaQueryWrapper<Paint> wrapper = new LambdaQueryWrapper<>();
         wrapper.in(Paint::getId, paintIds)
                 .ne(Paint::getStatus, Available.HAS_DELETE.getCode())
                 .orderByDesc(Paint::getCreateTime);

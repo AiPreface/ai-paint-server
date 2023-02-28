@@ -1,13 +1,14 @@
 package com.paint.service.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.paint.common.annotation.Excel;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 绘图主对象 paint
@@ -16,7 +17,7 @@ import java.util.Date;
  * @date 2023-02-26
  */
 @Data
-public class Paint  {
+public class Paint implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -78,14 +79,14 @@ public class Paint  {
      * 更新时间
      */
     @Excel(name = "更新时间")
-    @TableField("update_time")
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     /**
      * 创建时间
      */
     @Excel(name = "创建时间")
-    @TableField("create_time")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
 

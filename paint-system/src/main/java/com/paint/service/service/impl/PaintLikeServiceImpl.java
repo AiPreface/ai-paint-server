@@ -8,10 +8,12 @@ import com.paint.service.domain.Paint;
 import com.paint.service.domain.PaintLike;
 import com.paint.service.domain.form.ApiLikeForm;
 import com.paint.service.mapper.PaintLikeMapper;
+import com.paint.service.mapper.PaintMapper;
 import com.paint.service.service.IPaintLikeService;
 import com.paint.service.service.IPaintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +29,10 @@ public class PaintLikeServiceImpl extends ServiceImpl<PaintLikeMapper, PaintLike
 
     @Autowired
     private IPaintService paintService;
+
+    @Autowired
+    private PaintMapper paintMapper;
+
     /**
      * 查询绘图点赞
      *
@@ -95,6 +101,7 @@ public class PaintLikeServiceImpl extends ServiceImpl<PaintLikeMapper, PaintLike
         return baseMapper.deletePaintLikeById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void ApiSaveLike(ApiLikeForm likeForm) {
         Paint paint = paintService.getById(likeForm.getImgId());
@@ -113,14 +120,20 @@ public class PaintLikeServiceImpl extends ServiceImpl<PaintLikeMapper, PaintLike
             paintLike.setUserId(likeForm.getUserId());
             paintLike.setStatus(Available.AVAILABLE.getCode());
             paintLike.setCreateTime(LocalDateTime.now());
-            save(paintLike);
+            boolean b = save(paintLike);
+            if (b) {
+                paintMapper.incrementLikeCount(paint.getId());
+            }
         } else {
             if (already == null) {
                 throw new RuntimeException("还没有点赞");
             }
             already.setStatus(Available.HAS_DELETE.getCode());
             already.setUpdateTime(LocalDateTime.now());
-            updateById(already);
+            boolean b = updateById(already);
+            if (b) {
+                paintMapper.decrementLikeCount(paint.getId());
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.paint.service.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.paint.service.domain.Paint;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -59,4 +60,16 @@ public interface PaintMapper extends BaseMapper<Paint> {
      * @return 结果
      */
     public int deletePaintByIds(String[] ids);
+
+    @Update("UPDATE `paint` SET `like_count` = `like_count` + 1  WHERE `id` = #{id}")
+    void incrementLikeCount(String id);
+
+    @Update("UPDATE `paint` SET `like_count` = `like_count` - 1  WHERE `id` = #{id}")
+    void decrementLikeCount(String id);
+
+    @Update("UPDATE `paint` SET `comment_count` = `comment_count` + 1  WHERE `id` = #{id}")
+    void incrementCommentCount(String id);
+
+    @Update("UPDATE `paint` SET `comment_count` = `comment_count` - 1  WHERE `id` = #{id}")
+    void decrementCommentCount(String id);
 }
