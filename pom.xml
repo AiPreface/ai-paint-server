@@ -9,7 +9,7 @@
     <version>3.8.5</version>
 
     <name>paint</name>
-    <description>咕咕咕</description>
+    <description>paint后台服务</description>
 
     <properties>
         <paint.version>3.8.5</paint.version>

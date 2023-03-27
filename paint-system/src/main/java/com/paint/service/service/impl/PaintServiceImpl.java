@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.paint.common.core.domain.ApiBaseCondition;
 import com.paint.common.enums.Available;
 import com.paint.common.utils.StringUtils;
 import com.paint.service.domain.Paint;
@@ -15,11 +16,16 @@ import com.paint.service.domain.vo.PaintVo;
 import com.paint.service.mapper.PaintMapper;
 import com.paint.service.service.IPaintService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +35,7 @@ import java.util.stream.Collectors;
  * @author story-x
  * @date 2023-02-26
  */
+@CacheConfig(cacheNames = "cache:paint")
 @Service
 public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements IPaintService{
 
@@ -308,5 +315,28 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
         }).collect(Collectors.toList());
 
         return paintVos;
+    }
+
+    @Override
+    public Page<Paint> rankToday(ApiBaseCondition query) {
+        return rank(query, LocalDateTime.now().with(LocalTime.MIN));
+    }
+
+    @Override
+    public Page<Paint> rank(ApiBaseCondition query, LocalDateTime startTime) {
+        LambdaQueryWrapper<Paint> wrapper = Wrappers.<Paint>query().lambda().ge(Paint::getCreateTime, startTime);
+        return page(new Page<>(query.getPage(), query.getPageSize()), wrapper);
+    }
+
+    @Cacheable
+    @Override
+    public Page<Paint> rankWeek(ApiBaseCondition query) {
+        return rank(query, LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)));
+    }
+
+    @Cacheable
+    @Override
+    public Page<Paint> rankMonth(ApiBaseCondition query) {
+        return rank(query, LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth()));
     }
 }

@@ -2,7 +2,9 @@ package com.paint.web.controller.tool;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.paint.common.core.domain.ApiBaseCondition;
 import com.paint.common.core.domain.R;
+import com.paint.service.domain.Paint;
 import com.paint.service.domain.condition.ApiPaintCondition;
 import com.paint.service.domain.form.ApiCommentForm;
 import com.paint.service.domain.form.ApiLikeForm;
@@ -15,7 +17,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -128,9 +133,20 @@ public class ApiPaintServiceController {
         try {
             List<PaintVo> paintVoList = paintService.getImgListByTag(condition);
             return R.ok(paintVoList);
-        }catch (Exception e){
+        } catch (Exception e) {
             return R.fail(e.getMessage());
         }
     }
 
+
+    @ApiOperation("分页查询绘图今日排行榜")
+    @PostMapping("/rankToday")
+    public R<Page<Paint>> rankToday(@Validated @RequestBody ApiBaseCondition condition) {
+        try {
+            Page<Paint> list = paintService.rankToday(condition);
+            return R.ok(list);
+        } catch (Exception e) {
+            return R.fail(e.getMessage());
+        }
+    }
 }

@@ -56,15 +56,19 @@
         </dependency>
 
 
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.paint</groupId>
-            <artifactId>paint-generator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.paint</groupId>
-            <artifactId>paint-system</artifactId>
-        </dependency>
+	    <!-- 代码生成-->
+	    <dependency>
+		    <groupId>com.paint</groupId>
+		    <artifactId>paint-generator</artifactId>
+	    </dependency>
+	    <dependency>
+		    <groupId>com.paint</groupId>
+		    <artifactId>paint-system</artifactId>
+	    </dependency>
+	    <dependency>
+		    <groupId>com.paint</groupId>
+		    <artifactId>paint-quartz</artifactId>
+	    </dependency>
 
     </dependencies>
 

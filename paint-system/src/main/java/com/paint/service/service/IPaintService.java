@@ -2,12 +2,14 @@ package com.paint.service.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.paint.common.core.domain.ApiBaseCondition;
 import com.paint.common.core.domain.R;
 import com.paint.service.domain.Paint;
 import com.paint.service.domain.condition.ApiPaintCondition;
 import com.paint.service.domain.form.ApiPaintForm;
 import com.paint.service.domain.vo.PaintVo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -105,4 +107,11 @@ public interface IPaintService extends IService<Paint> {
      */
     List<PaintVo> getImgListByTag(ApiPaintCondition condition);
 
+    Page<Paint> rankToday(ApiBaseCondition query);
+
+    Page<Paint> rank(ApiBaseCondition query, LocalDateTime startTime);
+
+    Page<Paint> rankWeek(ApiBaseCondition query);
+
+    Page<Paint> rankMonth(ApiBaseCondition query);
 }
