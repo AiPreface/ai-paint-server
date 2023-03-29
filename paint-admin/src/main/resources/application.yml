@@ -53,6 +53,17 @@ spring:
     validate-on-migrate: true
     enabled: true
 
+  redis:
+    host: 192.168.0.202
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 30
+        max-wait: 30000
+  quartz:
+    job-store-type: jdbc
+
 # token配置
 token:
   # 令牌自定义标识

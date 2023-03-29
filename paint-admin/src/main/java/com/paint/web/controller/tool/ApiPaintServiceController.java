@@ -149,4 +149,26 @@ public class ApiPaintServiceController {
             return R.fail(e.getMessage());
         }
     }
+
+    @ApiOperation("分页查询绘图本周排行榜")
+    @PostMapping("/rankWeek")
+    public R<Page<Paint>> rankWeek(@Validated @RequestBody ApiBaseCondition condition) {
+        try {
+            Page<Paint> list = paintService.rankWeek(condition);
+            return R.ok(list);
+        } catch (Exception e) {
+            return R.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("分页查询绘图本月排行榜")
+    @PostMapping("/rankMonth")
+    public R<Page<Paint>> rankMonth(@Validated @RequestBody ApiBaseCondition condition) {
+        try {
+            Page<Paint> list = paintService.rankMonth(condition);
+            return R.ok(list);
+        } catch (Exception e) {
+            return R.fail(e.getMessage());
+        }
+    }
 }

@@ -604,17 +604,6 @@ create table sys_job
 ) engine = innodb
   auto_increment = 100 comment = '定时任务调度表';
 
-insert into sys_job
-values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams', '0/10 * * * * ?', '3', '1', '1', 'admin', sysdate(), '',
-        null, '');
-insert into sys_job
-values (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')', '0/15 * * * * ?', '3', '1', '1', 'admin', sysdate(),
-        '', null, '');
-insert into sys_job
-values (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)', '0/20 * * * * ?',
-        '3', '1', '1', 'admin', sysdate(), '', null, '');
-
-
 -- ----------------------------
 -- 17、定时任务调度日志表
 -- ----------------------------
@@ -631,5 +620,22 @@ create table sys_job_log
     create_time    datetime comment '创建时间',
     primary key (job_log_id)
 ) engine = innodb comment = '定时任务调度日志表';
+
+insert into sys_job
+values (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams', '0/10 * * * * ?', '3', '1', '1', 'admin', sysdate(), '',
+        null, '');
+insert into sys_job
+values (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')', '0/15 * * * * ?', '3', '1', '1', 'admin', sysdate(),
+        '', null, '');
+insert into sys_job
+values (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)', '0/20 * * * * ?',
+        '3', '1', '1', 'admin', sysdate(), '', null, '');
+
+insert into sys_job
+values (4, '绘图排行榜周和月缓存', 'DEFAULT', 'paintRankJob.resetRankCache', '0 0/1 0 * * ?', '3', '1', '0', 'admin',
+        sysdate(), '',
+        null, '');
+
+
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -3,6 +3,7 @@ package com.paint.service.domain.condition;
 import com.paint.common.core.domain.ApiBaseCondition;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author story-x
  * @date 2023-02-26
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ApiPaintCondition extends ApiBaseCondition {
     private static final long serialVersionUID = 1L;

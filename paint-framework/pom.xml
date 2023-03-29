@@ -66,6 +66,11 @@
             <groupId>com.paint</groupId>
             <artifactId>paint-system</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.paint</groupId>
+            <artifactId>paint-quartz</artifactId>
+            <version>3.8.5</version>
+        </dependency>
 
     </dependencies>
 

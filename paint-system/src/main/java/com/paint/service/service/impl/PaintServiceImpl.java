@@ -35,9 +35,10 @@ import java.util.stream.Collectors;
  * @author story-x
  * @date 2023-02-26
  */
-@CacheConfig(cacheNames = "cache:paint")
+@CacheConfig(cacheNames = PaintServiceImpl.CACHE_NAME)
 @Service
 public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements IPaintService{
+    public static final String CACHE_NAME = "cache:paint";
 
     @Autowired
     private PaintTagServiceImpl paintTagService;
@@ -324,7 +325,9 @@ public class PaintServiceImpl extends ServiceImpl<PaintMapper, Paint> implements
 
     @Override
     public Page<Paint> rank(ApiBaseCondition query, LocalDateTime startTime) {
-        LambdaQueryWrapper<Paint> wrapper = Wrappers.<Paint>query().lambda().ge(Paint::getCreateTime, startTime);
+        LambdaQueryWrapper<Paint> wrapper = Wrappers.<Paint>query().lambda()
+                .ge(Paint::getCreateTime, startTime)
+                .ne(Paint::getStatus, Available.HAS_DELETE.getCode());
         return page(new Page<>(query.getPage(), query.getPageSize()), wrapper);
     }
 

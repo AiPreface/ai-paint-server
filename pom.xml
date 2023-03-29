@@ -148,6 +148,11 @@
                 <artifactId>paint-framework</artifactId>
                 <version>${paint.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.paint</groupId>
+                <artifactId>paint-quartz</artifactId>
+                <version>${paint.version}</version>
+            </dependency>
 
             <!-- 系统模块-->
             <dependency>
