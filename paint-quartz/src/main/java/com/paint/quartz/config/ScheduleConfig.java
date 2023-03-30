@@ -1,4 +1,4 @@
-package com.ruoyi.quartz.config;
+package com.paint.quartz.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +14,7 @@ import java.util.Properties;
  */
 @Configuration
 public class ScheduleConfig {
+
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();

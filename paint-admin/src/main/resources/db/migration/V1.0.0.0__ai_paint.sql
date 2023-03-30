@@ -632,7 +632,7 @@ values (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\
         '3', '1', '1', 'admin', sysdate(), '', null, '');
 
 insert into sys_job
-values (4, '绘图排行榜周和月缓存', 'DEFAULT', 'paintRankJob.resetRankCache', '0 0/1 0 * * ?', '3', '1', '0', 'admin',
+values (4, '绘图排行榜周和月缓存', 'DEFAULT', 'paintRankJob.resetRankCache', '0 0 0 * * ?', '3', '1', '0', 'admin',
         sysdate(), '',
         null, '');
 
