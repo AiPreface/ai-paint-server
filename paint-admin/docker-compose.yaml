@@ -1,0 +1,64 @@
+version: "3.9"
+services:
+  redis:
+    container_name: paint-redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6390:6379" # 映射redis插件端口，格式"主机端口:容器内部端口"
+    environment:
+      REDIS_PASSWORD: 123456
+    volumes:
+      # 前往 https://download.redis.io/redis-stable/redis.conf 下载配置文件，放入 ./redis/config 文件夹中
+      - ./redis/config:/etc/redis/    # Redis配置文件
+      - ./redis/data:/data
+      - ./redis/logs:/logs
+    command: redis-server /etc/redis/redis.conf    # 取消注释以应用Redis配置文件
+    healthcheck:
+      test: [ "CMD", "redis-cli", "auth 123456", "PING" ]
+      start_period: 10s
+      interval: 5s
+      timeout: 1s
+
+  mysql:
+    container_name: paint-mysql
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    #      MYSQL_USER: 'root'
+    #      MYSQL_PASS: '123456'
+    ports:
+      - "9734:3306"
+    volumes:
+      - "./db/:/var/lib/mysql/"
+      - "./conf/my.cnf:/etc/my.cnf"
+      - "./init/:/docker-entrypoint-initdb.d/"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci --lower_case_table_names=1
+
+  # 指定服务名称
+  webapp:
+    #自己构建的镜像，当前路径Dockerfile
+    #    build: .
+    # 指定服务使用的镜像
+    image: woxigousade/ai-paint-server
+    # 指定容器名称
+    container_name: paint-server
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: 123456
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: 123456
+    # 指定服务运行的端口
+    ports:
+      - "9527:9527"
+    # 指定容器中需要挂载的文件
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /tmp/paint-server/logs:/var/logs
+    depends_on:
+      - redis
+      - mysql

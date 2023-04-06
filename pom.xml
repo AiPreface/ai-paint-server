@@ -199,6 +199,7 @@
         <module>paint-system</module>
         <module>paint-generator</module>
         <module>paint-common</module>
+        <module>paint-quartz</module>
     </modules>
     <packaging>pom</packaging>
 
