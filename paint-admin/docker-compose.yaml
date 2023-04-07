@@ -15,6 +15,8 @@ services:
       - ./redis/logs:/logs
     command: redis-server /etc/redis/redis.conf    # 取消注释以应用Redis配置文件
     healthcheck:
+      # 如果redis.conf中设置了密码，则启用第二行包含auth password，否则使用第一行(未设置密码时请勿映射宿主机端口)
+      #      test: [ "CMD", "redis-cli", "PING" ]
       test: [ "CMD", "redis-cli", "auth 123456", "PING" ]
       start_period: 10s
       interval: 5s
@@ -25,15 +27,17 @@ services:
     image: mysql:8.0.32
     restart: always
     environment:
+      # 默认时区是UTC，需要指定UTC+8
+      TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: "123456"
     #      MYSQL_USER: 'root'
     #      MYSQL_PASS: '123456'
     ports:
       - "9734:3306"
     volumes:
-      - "./db/:/var/lib/mysql/"
-      - "./conf/my.cnf:/etc/my.cnf"
-      - "./init/:/docker-entrypoint-initdb.d/"
+      - "./mysql/db/:/var/lib/mysql/"
+      - "./mysql/conf/my.cnf:/etc/my.cnf"
+      - "./mysql/init/:/docker-entrypoint-initdb.d/"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci --lower_case_table_names=1
 
   # 指定服务名称
@@ -45,14 +49,16 @@ services:
     # 指定容器名称
     container_name: paint-server
     environment:
+      # DB_HOST和DB_PORT固定为mysql和3306，不要修改，因为访问的是上面的mysql服务
       DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: 123456
+      # REDIS_HOST和REDIS_PORT固定为redis和6379，不要修改，因为访问的是上面的redis服务
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: 123456
-    # 指定服务运行的端口
+    # 指定服务运行的端口，业务服务端口号修改需要同时修改application.yml
     ports:
       - "9527:9527"
     # 指定容器中需要挂载的文件
