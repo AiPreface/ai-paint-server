@@ -29,9 +29,9 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://localhost:3306/ai_paint?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-        username: root
-        password: root
+        url: jdbc:mysql://${DB_HOST}:${DB_PORT}/ai_paint?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
       # 从库数据源
       slave:
         # 从数据源开关/默认关闭
@@ -85,11 +85,11 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: localhost
+    host: ${REDIS_HOST}
     # 端口，默认为6379
     port: ${REDIS_PORT}
     # 数据库索引
-    database: 0
+    database: 8
     # 密码
     password: ${REDIS_PASSWORD}
     # 连接超时时间
