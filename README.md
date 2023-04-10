@@ -14,9 +14,19 @@
 2. 下载[mysql](paint-admin%2Fsrc%2Fmain%2Fresources%2Fdocker%2Fmysql)
    目录，与[docker-compose.yaml](paint-admin%2Fdocker-compose.yaml)所在目录同级，这是mysql docker相关配置文件
 3. 下载[redis](paint-admin%2Fsrc%2Fmain%2Fresources%2Fdocker%2Fredis)
-   目录，与[docker-compose.yaml](paint-admin%2Fdocker-compose.yaml)所在目录同级，这是mysql docker相关配置文件
+   目录，与[docker-compose.yaml](paint-admin%2Fdocker-compose.yaml)所在目录同级，这是redis docker相关配置文件
 4. 打开[docker-compose.yaml](paint-admin%2Fdocker-compose.yaml)
    ，修改相关配置，具体请看文件内注释，关键是修改映射端口和各服务密码，如果要映射端口到宿主机，请勿设置空密码或简单密码。
+
+示例目录结构
+
+```
+.
+├── paint
+│   ├── docker-compose.yaml
+│   ├── mysql
+│   ├── redis
+```
 
 ### 运行项目
 
