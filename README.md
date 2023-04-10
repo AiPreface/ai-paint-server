@@ -10,7 +10,7 @@
 
 ### 准备工作
 
-1. 下载项目根目录下的[docker-compose.yaml](paint-admin%2Fdocker-compose.yaml)，放入任意目录，例如/paint
+1. 下载[docker-compose.yaml](paint-admin%2Fdocker-compose.yaml)，放入任意目录，例如/paint
 2. 下载[mysql](paint-admin%2Fsrc%2Fmain%2Fresources%2Fdocker%2Fmysql)
    目录，与[docker-compose.yaml](paint-admin%2Fdocker-compose.yaml)所在目录同级，这是mysql docker相关配置文件
 3. 下载[redis](paint-admin%2Fsrc%2Fmain%2Fresources%2Fdocker%2Fredis)
