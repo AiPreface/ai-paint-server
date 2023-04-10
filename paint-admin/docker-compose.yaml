@@ -45,7 +45,7 @@ services:
     #自己构建的镜像，当前路径Dockerfile
     #    build: .
     # 指定服务使用的镜像
-    image: woxigousade/ai-paint-server
+    image: woxigousade/ai-paint-server:v1.0.0
     # 指定容器名称
     container_name: paint-server
     environment:
